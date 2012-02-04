@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'pony'
+require 'sinatra/content_for'
+
+helpers Sinatra::ContentFor
 
 get '/' do 
   @page_title = "Welcome to tomciopp.com"
@@ -34,6 +37,7 @@ get '/success' do
   @page_title = "Email sent" 
 end
 
-get '/presentation' do 
+get '/class' do 
   @page_title = "Agile web development class"
+  erb :class
 end
