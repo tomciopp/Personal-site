@@ -1,2 +1,2 @@
-require 'personal'
+require './personal'
 run Sinatra::Application
