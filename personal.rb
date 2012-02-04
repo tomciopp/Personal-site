@@ -1,17 +1,16 @@
 require 'rubygems'
 require 'sinatra'
-
+require 'pony'
 
 get '/' do 
   @page_title = "Welcome to tomciopp.com"
   erb :index
 end
 
-post '/' do 
+post '/send' do 
   name = params[:name]
   sender_email = params[:email]
   message = params[:message]
-  require 'pony'
     Pony.mail(
       :from => "#{name} <#{sender_email}>",
       :to => 'thomas.cioppettini@gmail.com',
