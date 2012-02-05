@@ -10,7 +10,7 @@ get '/' do
   erb :index
 end
 
-post '/send' do 
+post '/contact' do 
   name = params[:name]
   sender_email = params[:email]
   message = params[:message]
@@ -40,4 +40,8 @@ end
 get '/class' do 
   @page_title = "Agile web development class"
   erb :class
+end
+
+get '/contact' do 
+  erb :contact
 end
