@@ -28,13 +28,13 @@ post '/contact' do
       :port => '587',
       :via => :smtp,
       :via_options => { 
-        :address              => 'smtp.sendgrid.net', 
-        :port                 => '587',  
-        :user_name            => ENV['SENDGRID_USERNAME'], 
-        :password             => ENV['SENDGRID_PASSWORD'], 
-        :domain               => ENV['SENDGRID_DOMAIN'],
+        :address              => 'smtp.' + settings.email_service, 
+        :port                 => '587', 
+        :enable_starttls_auto => true, 
+        :user_name            => settings.email_username, 
+        :password             => settings.email_password, 
         :authentication       => :plain, 
-        :enable_starttls_auto => true
+        :domain               => settings.email_domain
       })
     redirect '/success'
 end
