@@ -3,12 +3,6 @@ require 'sinatra'
 require 'pony'
 require 'sinatra/content_for'
 
-set :email_username, ENV['SENDGRID_USERNAME'] ||
-set :email_password, ENV['SENDGRID_PASSWORD'] ||
-set :email_address, 'thomas.cioppettini@gmail.com'
-set :email_service, ENV['EMAIL_SERVICE'] || 'gmail.com'
-set :email_domain, ENV['SENDGRID_DOMAIN'] || 'localhost.localdomain'
-
 helpers Sinatra::ContentFor
 
 get '/' do 
@@ -28,13 +22,13 @@ post '/contact' do
       :port => '587',
       :via => :smtp,
       :via_options => { 
-        :address              => 'smtp.' + settings.email_service, 
-        :port                 => '587', 
-        :enable_starttls_auto => true, 
-        :user_name            => settings.email_username, 
-        :password             => settings.email_password, 
+        :address              => 'smtp.sendgrid.net', 
+        :port                 => '587',  
+        :user_name            => ENV['SENDGRID_USERNAME'], 
+        :password             => ENV['SENDGRID_PASSWORD'], 
+        :domain               => 'heroku.com',
         :authentication       => :plain, 
-        :domain               => settings.email_domain
+        :enable_starttls_auto => true
       })
     redirect '/success'
 end
