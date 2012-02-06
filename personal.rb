@@ -34,7 +34,8 @@ post '/contact' do
 end
 
 get '/success' do
-  @page_title = "Email sent" 
+  @page_title = "Email sent"
+  erb :success 
 end
 
 get '/class' do 
