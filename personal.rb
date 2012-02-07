@@ -16,7 +16,7 @@ get '/' do
   erb :index
 end
 
-post '/contact' do 
+post '/' do 
   configure_pony
   name = params[:name]
   sender_email = params[:email]
