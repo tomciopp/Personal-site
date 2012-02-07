@@ -15,7 +15,7 @@ post '/contact' do
   sender_email = params[:email]
   message = params[:message]
     Pony.mail(
-      :from => "#{name} <#{sender_email}>",
+      :from => "#{name}<#{sender_email}>",
       :to => 'thomas.cioppettini@gmail.com',
       :subject =>"#{name} has contacted you",
       :body => "#{message}",
