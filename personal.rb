@@ -2,8 +2,14 @@ require 'rubygems'
 require 'sinatra'
 require 'pony'
 require 'sinatra/content_for'
+use Rack::Logger
 
 helpers Sinatra::ContentFor
+helpers do 
+  def logger 
+    request.logger
+  end
+end
 
 get '/' do 
   @page_title = "Welcome to tomciopp.com"
@@ -11,26 +17,17 @@ get '/' do
 end
 
 post '/contact' do 
+  configure_pony
   name = params[:name]
   sender_email = params[:email]
   message = params[:message]
-  log params.inspect
+  logger.error params.inspect
   Pony.mail(
     :from => "#{name}<#{sender_email}>",
     :to => 'thomas.cioppettini@gmail.com',
     :subject =>"#{name} has contacted you",
     :body => "#{message}",
-    :port => '587',
-    :via => :smtp,
-    :via_options => { 
-      :address              => 'smtp.sendgrid.net', 
-      :port                 => '587',  
-      :user_name            => ENV['SENDGRID_USERNAME'], 
-      :password             => ENV['SENDGRID_PASSWORD'], 
-      :domain               => ENV['SENDGRID_DOMAIN'],
-      :authentication       => :plain, 
-      :enable_starttls_auto => true
-    })
+  )
     redirect '/success'
 end
 
@@ -46,4 +43,18 @@ end
 
 get '/contact' do 
   erb :contact
+end
+
+def configure_pony
+  Pony.options = {
+    :via => :smtp,
+    :via_options => { 
+      :address              => 'smtp.sendgrid.net', 
+      :port                 => '587',  
+      :user_name            => ENV['SENDGRID_USERNAME'], 
+      :password             => ENV['SENDGRID_PASSWORD'], 
+      :authentication       => :plain, 
+      :enable_starttls_auto => true
+    }    
+  }
 end
