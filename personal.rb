@@ -22,13 +22,18 @@ post '/contact' do
   sender_email = params[:email]
   message = params[:message]
   logger.error params.inspect
-  Pony.mail(
-    :from => "#{name}<#{sender_email}>",
-    :to => 'thomas.cioppettini@gmail.com',
-    :subject =>"#{name} has contacted you",
-    :body => "#{message}",
-  )
+  begin
+    Pony.mail(
+      :from => "#{name}<#{sender_email}>",
+      :to => 'thomas.cioppettini@gmail.com',
+      :subject =>"#{name} has contacted you",
+      :body => "#{message}",
+    )
     redirect '/success'
+  rescue
+    @exception = $!
+    erb :boom
+  end
 end
 
 get '/success' do
@@ -54,7 +59,8 @@ def configure_pony
       :user_name            => ENV['SENDGRID_USERNAME'], 
       :password             => ENV['SENDGRID_PASSWORD'], 
       :authentication       => :plain, 
-      :enable_starttls_auto => true
+      :enable_starttls_auto => true,
+      :domain               => 'heroku.com'
     }    
   }
 end
